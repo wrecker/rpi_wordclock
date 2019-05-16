@@ -5,9 +5,9 @@ import inspect
 import os
 import time
 from shutil import copyfile
-import wordclock_tools.wordclock_display as wcd
-import wordclock_interfaces.event_handler as wci
-import wordclock_interfaces.web_interface as wciweb
+import tools.wordclock_display as wcd
+import interfaces.event_handler as wci
+import interfaces.web_interface as wciweb
 
 
 class wordclock:
@@ -23,9 +23,9 @@ class wordclock:
         self.basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
         # Get wordclock configuration from config-file
-        pathToConfigFile = self.basePath + '/wordclock_config/wordclock_config.cfg'
+        pathToConfigFile = self.basePath + '/config/wordclock_config.cfg'
         if not os.path.exists(pathToConfigFile):
-            pathToConfigFileExample = self.basePath + '/wordclock_config/wordclock_config.example.cfg'
+            pathToConfigFileExample = self.basePath + '/config/wordclock_config.example.cfg'
             if not os.path.exists(pathToConfigFileExample):
                 print('Error: No config-file available!')
                 print('  Expected ' + pathToConfigFile + ' or ' + pathToConfigFileExample)
@@ -46,7 +46,7 @@ class wordclock:
         self.wci = wci.event_handler()
 
         if not self.developer_mode_active:
-            import wordclock_interfaces.gpio_interface as wcigpio
+            import interfaces.gpio_interface as wcigpio
             self.gpio = wcigpio.gpio_interface(self.config, self.wci)
 
         # Create object to display any content on the wordclock display
@@ -57,7 +57,7 @@ class wordclock:
         self.pathToGeneralIcons = os.path.join(self.basePath, 'icons', self.wcd.dispRes())
 
         # Assemble path to plugin directory
-        plugin_dir = os.path.join(self.basePath, 'wordclock_plugins')
+        plugin_dir = os.path.join(self.basePath, 'plugins')
 
         # Assemble list of all available plugins
         plugins = (plugin for plugin in os.listdir(plugin_dir) if os.path.isdir(os.path.join(plugin_dir, plugin)))
@@ -79,15 +79,15 @@ class wordclock:
                 # Check, if plugin is valid (if the plugin.py is provided)
                 if not os.path.isfile(os.path.join(plugin_dir, plugin, 'plugin.py')):
                     raise
-                self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
+                self.plugins.append(import_module('plugins.' + plugin + '.plugin').plugin(self.config))
                 # Search for default plugin to display the time
-                if plugin == 'time_default':
+                if plugin == 'awake_time':
                     print('  Selected "' + plugin + '" as default plugin')
                     self.default_plugin = index
                 print('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index += 1
-            except:
-                print('Failed to import plugin ' + plugin + '!')
+            except Exception, e:
+                print('Failed to import plugin %s! [%s]' % (plugin, e))
 
         # Create object to interact with the wordclock using the interface of your choice
         self.plugin_index = 0
@@ -113,8 +113,8 @@ class wordclock:
         try:
 	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
 	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        except:
-            print('ERROR: In plugin ' + self.plugins[self.plugin_index].name + '.')
+        except Exception, e:
+            print('ERROR: In plugin %s. [%s]' % (self.plugins[self.plugin_index].name, e))
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
 
         # Cleanup display after exiting plugin

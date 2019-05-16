@@ -113,14 +113,14 @@ Clone the wordclock software to the directory ~/rpi_wordclock (to run the actual
 Adopt software
 --------------
 
-To adjust the wordclock to your own settings, create and edit the file ~/rpi_wordclock/wordclock_config/wordclock_config.cfg
+To adjust the wordclock to your own settings, create and edit the file ~/rpi_wordclock/config/wordclock_config.cfg
 
-To start over, you might just copy the file ~/rpi_wordclock/wordclock_config/wordclock_config.example.cfg and adopt this file.
+To start over, you might just copy the file ~/rpi_wordclock/config/wordclock_config.example.cfg and adopt this file.
 
 Note: Each plugin of the wordclock project has its own section in the config-file (create it, if needed, but not existant)
 
 .. note:: If your wordclock has a stencil layout or display resolution, which is not supported yet, you might need to adopt the
-  software by providing your own `wiring`-class (to the file wordclock_tools/wiring.py)
+  software by providing your own `wiring`-class (to the file tools/wiring.py)
 
 
 .. _run_software:

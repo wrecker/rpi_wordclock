@@ -150,6 +150,7 @@ class Glyph(object):
 
 class Font(object):
     def __init__(self, filename, size):
+        print("Font filename: " + filename)
         self.face = freetype.Face(filename)
         self.face.set_pixel_sizes(0, size)
 

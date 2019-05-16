@@ -4,7 +4,7 @@ import getopt
 import os
 import svgwrite
 import sys
-import wordclock_tools.wiring as wiring
+import tools.wiring as wiring
 
 
 def searchInWCA(wcl, index):
@@ -75,7 +75,7 @@ def create_svg(lang, config, side='front', mode='stencil'):
     rm = minute_diameter / 2
 
     # Create directory to store layout
-    file_dir = os.path.join('wordclock_layouts', lang + '_' + str(col_num) + 'x' + str(row_num))
+    file_dir = os.path.join('layouts', lang + '_' + str(col_num) + 'x' + str(row_num))
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
     full_path = os.path.join(file_dir, outpt_file)
@@ -225,7 +225,7 @@ def main():
     except getopt.GetoptError as err:
         print(str(err))
         sys.exit(2)
-    configFile = 'wordclock_config/wordclock_config.example.cfg'
+    configFile = 'config/wordclock_config.example.cfg'
     process_all = False
     for o, a in opts:
         if o in ('-a', '--all'):
