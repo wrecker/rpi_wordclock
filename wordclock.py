@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 from importlib import import_module
 import netifaces
 import inspect
@@ -9,6 +9,7 @@ import tools.wordclock_display as wcd
 import interfaces.event_handler as wci
 import interfaces.web_interface as wciweb
 
+import traceback
 
 class wordclock:
     """
@@ -33,7 +34,7 @@ class wordclock:
             copyfile(pathToConfigFileExample, pathToConfigFile)
             print('Warning: No config-file specified! Was created from example-config!')
         print('Parsing ' + pathToConfigFile)
-        self.config = ConfigParser.ConfigParser()
+        self.config = configparser.ConfigParser()
         self.config.read(pathToConfigFile)
 
         # Add to the loaded configuration the current base path to provide it
@@ -86,7 +87,7 @@ class wordclock:
                     self.default_plugin = index
                 print('Imported plugin ' + str(index) + ': "' + plugin + '".')
                 index += 1
-            except Exception, e:
+            except Exception as e:
                 print('Failed to import plugin %s! [%s]' % (plugin, e))
 
         # Create object to interact with the wordclock using the interface of your choice
@@ -111,9 +112,10 @@ class wordclock:
         """
 
         try:
-	    print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
-	    self.plugins[self.plugin_index].run(self.wcd, self.wci)
-        except Exception, e:
+            print('Running plugin ' + self.plugins[self.plugin_index].name + '.')
+            self.plugins[self.plugin_index].run(self.wcd, self.wci)
+        except Exception as e:
+            traceback.print_exc()
             print('ERROR: In plugin %s. [%s]' % (self.plugins[self.plugin_index].name, e))
             self.wcd.setImage(os.path.join(self.pathToGeneralIcons, 'error.png'))
 

@@ -8,74 +8,73 @@ class time_english:
     """
 
     def __init__(self):
-        self.prefix = range(0,3) +  range(5, 9) + range(11, 13) # -> THE TIME IS
-        self.about = range(16,21)
-        self.minutes_past = range(76,83) + range(85, 89) 
-        self.am = range(159, 161)
-        self.pm = range(162, 164)
-        self.time_for = range(165, 169) + range(175, 178)
-        self.coffee = range(180, 186)
-        self.lunch = range(186, 191)
-        self.tea = range(192, 195)
-        self.whiskey = range(195, 202)
-        self.time_to_go_home = range(165, 169) + range(171, 173) + range(203, 205) + range(206, 210)
+        self.prefix = list(range(0,3)) +  list(range(5, 9)) + list(range(11, 13)) # -> THE TIME IS
+        self.about = list(range(16,21))
+        self.minutes_past = list(range(76,83)) + list(range(85, 89))
+        self.am = list(range(159, 161))
+        self.pm = list(range(162, 164))
+        self.time_for = list(range(165, 169)) + list(range(175, 178))
+        self.coffee = list(range(180, 186))
+        self.lunch = list(range(186, 191))
+        self.tea = list(range(192, 195))
+        self.whiskey = list(range(195, 202))
+        self.time_to_go_home = list(range(165, 169)) + list(range(171, 173)) + list(range(203, 205)) + list(range(206, 210))
 
         self.minutes=[[], \
             # -> FIVE 
-            range(67, 71), \
+            list(range(67, 71)), \
             # -> TEN
-            range(23, 26), \
+            list(range(23, 26)), \
             # -> QUARTER PAST
-            range(30, 37), \
+            list(range(30, 37)), \
             # -> TWENTY PAST
-            range(45, 51), \
+            list(range(45, 51)), \
             # -> TWENTYFIVE PAST
-            range(45, 51) + range(67, 71), \
+            list(range(45, 51)) + list(range(67, 71)), \
             # -> THIRTY
-            range(52, 58), \
+            list(range(52, 58)), \
             # -> THIRTY FIVE
-            range(52, 58) + range(67, 71), \
+            list(range(52, 58)) + list(range(67, 71)), \
             # -> FORTY
-            range(39, 44), \
+            list(range(39, 44)), \
             # -> FORTY FIVE
-            range(39, 44) + range(67, 71), \
+            list(range(39, 44)) + list(range(67, 71)), \
             # -> FIFTY
-            range(60, 65), \
+            list(range(60, 65)), \
             # -> FIFTY FIVE
-            range(60, 65) + range(67, 71) ]
+            list(range(60, 65)) + list(range(67, 71)) ]
             # -> TWELVE
-        self.hours= [range(144, 150), \
+        self.hours= [list(range(144, 150)), \
             # -> ONE
-            range(90, 93), \
+            list(range(90, 93)), \
             # -> TWO
-            range(94, 97), \
+            list(range(94, 97)), \
             # -> THREE
-            range(99, 104), \
+            list(range(99, 104)), \
             # -> FOUR
-            range(105, 109), \
+            list(range(105, 109)), \
             # -> FIVE
-            range(109, 113), \
+            list(range(109, 113)), \
             # -> SIX
-            range(135, 138), \
+            list(range(135, 138)), \
             # -> SEVEN
-            range(139, 144), \
+            list(range(139, 144)), \
             # -> EIGHT
-            range(121, 126), \
+            list(range(121, 126)), \
             # -> NINE
-            range(127, 131), \
+            list(range(127, 131)), \
             # -> TEN
-            range(132, 135),\
+            list(range(132, 135)),\
             # -> ELEVEN
-            range(114 ,120), \
+            list(range(114 ,120)), \
             # -> TWELVE
-            range(144, 150)]
+            list(range(144, 150))]
         # -> OCLOCK
-        self.full_hour= range(151, 157)
+        self.full_hour= list(range(151, 157))
 
     def get_time(self, time, purist):
         hour=time.hour % 12
-        minute=time.minute/5
-
+        minute=int(time.minute/5)
         # Assemble indices
         ret = []
         ret.extend(self.prefix)

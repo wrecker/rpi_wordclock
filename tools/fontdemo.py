@@ -37,9 +37,9 @@ class Bitmap(object):
     and any other value indicates that it is `on`.
     """
     def __init__(self, width, height, pixels=None):
-        self.width = width
-        self.height = height
-        self.pixels = pixels or bytearray(width * height)
+        self.width = int(width)
+        self.height = int(height)
+        self.pixels = pixels or bytearray(int(width) * int(height))
 
     def __repr__(self):
         """Return a string representation of the bitmap's pixels."""
@@ -53,7 +53,7 @@ class Bitmap(object):
     def bitblt(self, src, x, y):
         """Copy all pixels from `src` into this bitmap"""
         srcpixel = 0
-        dstpixel = y * self.width + x
+        dstpixel = int(y * self.width + x)
         row_offset = self.width - src.width
 
         for sy in range(src.height):

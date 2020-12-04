@@ -1,18 +1,23 @@
 var ColorPicker = window.VueColorPicker;
+var VueColor = window.VueColor;
+var colors = { r: 255, g: 255, b: 255, a: 1 }
+
 new Vue(
 {
 	el: '#app',
 	components: {
-                ColorPicker: ColorPicker
+                ColorPicker: ColorPicker,
+		'compact-picker': VueColor.Compact,
 	},
 	data: {
 		brightness: undefined,
-        color: {
-            hue: undefined,
-            saturation: undefined,
-            luminosity: undefined,
-            alpha: 1
-        },
+		colors: colors,
+                color: {
+            		hue: undefined,
+            		saturation: undefined,
+            		luminosity: undefined,
+            		alpha: 1
+        	},
 		apiData: undefined,
 		selectedPlugin: {
 		    name: undefined,
@@ -21,7 +26,8 @@ new Vue(
 		switchWords: true,
 		switchMinutes: true,
 		switchBackground: false,
-		about: false
+		about: false,
+		
 	},
 	methods: {
 		loadApi: function () {
@@ -38,7 +44,7 @@ new Vue(
 			this.apiData = response.data;
 		},
 		successCallbackPlugin: function(response) {
-            this.selectedPlugin = response.data.plugin;
+            		this.selectedPlugin = response.data.plugin;
 		},
 		successCallbackColor: function(response) {
 			var h,s,l,r,g,b;
@@ -51,7 +57,7 @@ new Vue(
 			this.color.luminosity = l * 100;
 		},
 		successCallbackBrightness: function(response) {
-            this.brightness = response.data;
+            		this.brightness = response.data;
 		},
 		errorCallback: function(response) {
 			console.log('errorCallback response:' , response);
@@ -67,6 +73,28 @@ new Vue(
 			xmlhttp.open("POST", "/api/button");
 			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 			xmlhttp.send(JSON.stringify({ button: buttonClicked}));
+		},
+		updateColor: function(value) {
+			var r,g,b,type;
+			r = value.rgba.r;
+			g = value.rgba.g;
+			b = value.rgba.b;
+			if (this.switchWords) {
+				type = "words"
+			};
+			if (this.switchMinutes) {
+				type = "minutes"
+			};
+			if (this.switchWords && this.switchMinutes) {
+				type = "all"
+			};
+			if (this.switchBackground) {
+				type = "background"
+			};
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("POST", "/api/color");
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify({ "blue": b, "green": g, "red": r , "type": type}));
 		},
 		setColour: function(r,g,b) {
 			if (this.switchWords) {

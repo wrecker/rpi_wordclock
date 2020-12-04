@@ -1,8 +1,7 @@
-import ConfigParser
-import fontdemo
 import os
 from PIL import Image
-import wiring
+import tools.fontdemo as fontdemo
+import tools.wiring as wiring
 import plugins.time_default.time_english as time_english
 import plugins.time_default.time_english15x14 as time_english15x14
 import plugins.time_default.time_german as time_german
@@ -235,6 +234,7 @@ class wordclock_display:
 
         fnt = fontdemo.Font(font, self.wcl.WCA_HEIGHT)
         text_width, text_height, text_max_descent = fnt.text_dimensions(text)
+        text_width = int(text_width)
         text_as_pixel = fnt.render_text(text)
 
         # Display text count times
